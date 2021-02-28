@@ -1,76 +1,50 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    18:52:49 02/28/2021 
--- Design Name: 
--- Module Name:    counter - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 LIBRARY IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
--- //Solve "found '0' definitions of operator "+" in VHDL error"
-use ieee.std_logic_unsigned.all;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_ARITH.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
 ENTITY counter IS
     PORT (
         clk : IN STD_LOGIC;
         reset : IN STD_LOGIC;
         pause : IN STD_LOGIC;
-        count_out : OUT STD_LOGIC_VECTOR (3 DOWNTO 0));
+        count_out : OUT STD_LOGIC_VECTOR(3 DOWNTO 0));
 END counter;
-
 ARCHITECTURE Behavioral OF counter IS
-
-    SIGNAL temp_count : STD_LOGIC_VECTOR(3 DOWNTO 0) := "0000";
+    SIGNAL temp_count : STD_LOGIC_VECTOR(3 DOWNTO 0) := x"0";
     SIGNAL slow_clk : STD_LOGIC;
-    SIGNAL clk_divider : STD_LOGIC_VECTOR(1 DOWNTO 0) := "00";
-
+    -- Clock divider can be changed to suit application.
+    -- Clock (clk) is normally 50 MHz, so each clock cycle
+    -- is 20 ns. A clock divider of 'n' bits will make 1
+    -- slow_clk cycle equal 2^n clk cycles.
+    SIGNAL clk_divider : STD_LOGIC_VECTOR(23 DOWNTO 0) := x"000000";
 BEGIN
+    -- Process that makes slow clock go high only when MSB of
+    -- clk_divider goes high.
     clk_division : PROCESS (clk, clk_divider)
     BEGIN
-        IF clk'event AND clk = '1' THEN
+        IF (clk = '1' AND clk'event) THEN
             clk_divider <= clk_divider + 1;
         END IF;
-        slow_clk <= clk_divider(1);
-    END PROCESS;
 
+        slow_clk <= clk_divider(23);
+    END PROCESS;
     counting : PROCESS (reset, pause, slow_clk, temp_count)
     BEGIN
         IF reset = '1' THEN
-            temp_count <= "0000";
+            temp_count <= "0000"; -- Asynchronous reset.
         ELSIF pause = '1' THEN
-            temp_count <= temp_count;
+            temp_count <= temp_count; -- Asynchronous count pause.
         ELSE
-            IF slow_clk'event AND slow_clk = '1' THEN
+
+            IF slow_clk'event AND slow_clk = '1' THEN -- Counting state
                 IF temp_count < 9 THEN
-                    temp_count <= temp_count + 1;
+                    temp_count <= temp_count + 1; -- Counter increase
                 ELSE
-                    temp_count <= "0000";
+                    temp_count <= "0000"; -- Rollover to zero 
+
                 END IF;
             END IF;
         END IF;
-        count_out <= temp_count;
+        count_out <= temp_count; -- Output
     END PROCESS;
-	 
-	 
-END Behavioral;
+END Behavioral; -- End module.

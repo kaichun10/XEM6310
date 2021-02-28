@@ -1,0 +1,12 @@
+# UCF for the 4 bit counter
+# Change "clk" pin assignment to "V4" (BTN_NORTH) to
+# manually control the clock signal (don't forget "PULLDOWN")
+# Change "clk" to "C9" (CLK_50MHz) to run counter off
+# 50MHz clock
+NET "clk" LOC = "Y11" ;
+NET "count_out<0>" LOC = "V19" ; # LED<0>
+NET "count_out<1>" LOC = "V18" ; # LED<1>
+NET "count_out<2>" LOC = "Y19" ; # LED<2>
+NET "count_out<3>" LOC = "AB14" ; # LED<3>
+NET "pause" LOC = "M21" ; # SW<0>
+NET "reset" LOC = "M22" | PULLDOWN ; 

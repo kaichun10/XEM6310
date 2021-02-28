@@ -1,0 +1,8 @@
+INTSTYLE=impact
+INFILE=C:\LocalXilinx\Projects\counter\counter\impact.xsl
+OUTFILE=C:\LocalXilinx\Projects\counter\counter\impact.xsl
+FAMILY=None
+PART=None
+WORKINGDIR=C:\LocalXilinx\Projects\counter\counter
+LICENSE=iMPACT
+USER_INFO=iMPACT

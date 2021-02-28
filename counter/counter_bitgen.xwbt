@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=C:\LocalXilinx\Projects\counter\counter\counter.ncd
+OUTFILE=C:\LocalXilinx\Projects\counter\counter\counter.bit
+FAMILY=Spartan6
+PART=xc6slx150-3fgg484
+WORKINGDIR=C:\LocalXilinx\Projects\counter\counter
+LICENSE=ISE
+USER_INFO=212097153_0_0_043

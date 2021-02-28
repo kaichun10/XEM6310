@@ -1,96 +1,60 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
---
--- Create Date:   19:26:50 02/28/2021
--- Design Name:   
--- Module Name:   C:/LocalXilinx/Projects/counter/counter/counter_tb.vhd
--- Project Name:  counter
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
--- VHDL Test Bench Created by ISE for module: counter
--- 
--- Dependencies:
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
---
--- Notes: 
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
--- simulation model.
---------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
- 
-ENTITY counter_tb IS
-END counter_tb;
- 
-ARCHITECTURE behavior OF counter_tb IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
- 
-    COMPONENT counter
-    PORT(
-         clk : IN  std_logic;
-         reset : IN  std_logic;
-         pause : IN  std_logic;
-         count_out : OUT  std_logic_vector(3 downto 0)
-        );
-    END COMPONENT;
-    
-
+USE ieee.std_logic_unsigned.ALL;
+USE ieee.numeric_std.ALL;
+ENTITY counter_tb_vhd IS
+END counter_tb_vhd;
+ARCHITECTURE behavior OF counter_tb_vhd IS
+   -- Component Declaration for the Unit Under Test (UUT)
+   COMPONENT counter
+      PORT (
+         clk : IN STD_LOGIC;
+         reset : IN STD_LOGIC;
+         pause : IN STD_LOGIC;
+         count_out : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
+      );
+   END COMPONENT;
    --Inputs
-   signal clk : std_logic := '0';
-   signal reset : std_logic := '0';
-   signal pause : std_logic := '0';
+   SIGNAL clk : STD_LOGIC := '0';
+   SIGNAL reset : STD_LOGIC := '0';
+   SIGNAL pause : STD_LOGIC := '0';
+   --Outputs
+   SIGNAL count_out : STD_LOGIC_VECTOR(3 DOWNTO 0);
 
- 	--Outputs
-   signal count_out : std_logic_vector(3 downto 0);
-
-   -- Clock period definitions
-   constant clk_period : time := 10 ns;
- 
+   CONSTANT clk_period : TIME := 10 ns;
 BEGIN
- 
-	-- Instantiate the Unit Under Test (UUT)
-   uut: counter PORT MAP (
-          clk => clk,
-          reset => reset,
-          pause => pause,
-          count_out => count_out
-        );
+   -- Instantiate the Unit Under Test (UUT)
+   uut : counter PORT MAP(
+      clk => clk,
+      reset => reset,
+      pause => pause,
+      count_out => count_out
+   );
+   clock : PROCESS
+   BEGIN
+      clk <= NOT clk;
+      WAIT FOR clk_period;
 
-   -- Clock process definitions
-   clk_process :process
-   begin
-		clk <= '0';
-		wait for clk_period/2;
-		clk <= '1';
-		wait for clk_period/2;
-   end process;
- 
+   END PROCESS;
 
-   -- Stimulus process
-   stim_proc: process
-   begin		
-      -- hold reset state for 100 ns.
-      wait for 100 ns;	
+   pause_test : PROCESS
+   BEGIN
 
-      wait for clk_period*10;
+      pause <= '0';
+      WAIT FOR clk_period * 74;
+      pause <= '1';
+      WAIT FOR clk_period * 6;
+      
 
-      -- insert stimulus here 
+   END PROCESS;
 
-      wait;
-   end process;
+   reset_test : PROCESS
+   BEGIN
 
+      reset <= '0';
+      WAIT FOR clk_period * 106;
+      reset <= '1';
+      WAIT FOR clk_period * 2;
+
+   END PROCESS;
 END;

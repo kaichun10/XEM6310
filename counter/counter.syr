@@ -122,13 +122,13 @@ Elaborating entity <counter> (architecture <Behavioral>) from library <work>.
 Synthesizing Unit <counter>.
     Related source file is "C:\LocalXilinx\Projects\counter\counter\counter.vhd".
     Found 4-bit register for signal <temp_count>.
-    Found 2-bit register for signal <clk_divider>.
-    Found 2-bit adder for signal <clk_divider[1]_GND_5_o_add_0_OUT> created at line 52.
-    Found 4-bit adder for signal <temp_count[3]_GND_5_o_add_3_OUT> created at line 66.
-    Found 4-bit comparator greater for signal <temp_count[3]_PWR_5_o_LessThan_3_o> created at line 65
+    Found 24-bit register for signal <clk_divider>.
+    Found 24-bit adder for signal <clk_divider[23]_GND_5_o_add_0_OUT> created at line 26.
+    Found 4-bit adder for signal <temp_count[3]_GND_5_o_add_3_OUT> created at line 41.
+    Found 4-bit comparator greater for signal <temp_count[3]_PWR_5_o_LessThan_3_o> created at line 40
     Summary:
 	inferred   2 Adder/Subtractor(s).
-	inferred   6 D-type flip-flop(s).
+	inferred  28 D-type flip-flop(s).
 	inferred   1 Comparator(s).
 	inferred   1 Multiplexer(s).
 Unit <counter> synthesized.
@@ -138,10 +138,10 @@ HDL Synthesis Report
 
 Macro Statistics
 # Adders/Subtractors                                   : 2
- 2-bit adder                                           : 1
+ 24-bit adder                                          : 1
  4-bit adder                                           : 1
 # Registers                                            : 2
- 2-bit register                                        : 1
+ 24-bit register                                       : 1
  4-bit register                                        : 1
 # Comparators                                          : 1
  4-bit comparator greater                              : 1
@@ -165,7 +165,7 @@ Advanced HDL Synthesis Report
 
 Macro Statistics
 # Counters                                             : 2
- 2-bit up counter                                      : 1
+ 24-bit up counter                                     : 1
  4-bit up counter                                      : 1
 # Comparators                                          : 1
  4-bit comparator greater                              : 1
@@ -188,8 +188,8 @@ Final Macro Processing ...
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 6
- Flip-Flops                                            : 6
+# Registers                                            : 28
+ Flip-Flops                                            : 28
 
 =========================================================================
 
@@ -212,13 +212,17 @@ Top Level Output File Name         : counter.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 7
+# BELS                             : 78
+#      GND                         : 1
 #      INV                         : 2
-#      LUT2                        : 1
+#      LUT1                        : 23
 #      LUT3                        : 1
 #      LUT4                        : 3
-# FlipFlops/Latches                : 6
-#      FD                          : 2
+#      MUXCY                       : 23
+#      VCC                         : 1
+#      XORCY                       : 24
+# FlipFlops/Latches                : 28
+#      FD                          : 24
 #      FDCE                        : 4
 # Clock Buffers                    : 1
 #      BUFGP                       : 1
@@ -233,15 +237,15 @@ Selected Device : 6slx150fgg484-3
 
 
 Slice Logic Utilization: 
- Number of Slice Registers:               6  out of  184304     0%  
- Number of Slice LUTs:                    7  out of  92152     0%  
-    Number used as Logic:                 7  out of  92152     0%  
+ Number of Slice Registers:              28  out of  184304     0%  
+ Number of Slice LUTs:                   29  out of  92152     0%  
+    Number used as Logic:                29  out of  92152     0%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:     13
-   Number with an unused Flip Flop:       7  out of     13    53%  
-   Number with an unused LUT:             6  out of     13    46%  
-   Number of fully used LUT-FF pairs:     0  out of     13     0%  
+ Number of LUT Flip Flop pairs used:     29
+   Number with an unused Flip Flop:       1  out of     29     3%  
+   Number with an unused LUT:             0  out of     29     0%  
+   Number of fully used LUT-FF pairs:    28  out of     29    96%  
    Number of unique control sets:         2
 
 IO Utilization: 
@@ -272,8 +276,8 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-clk                                | BUFGP                  | 2     |
-clk_divider_1                      | NONE(temp_count_0)     | 4     |
+clk                                | BUFGP                  | 24    |
+clk_divider_23                     | NONE(temp_count_0)     | 4     |
 -----------------------------------+------------------------+-------+
 INFO:Xst:2169 - HDL ADVISOR - Some clock signals were not automatically buffered by XST with BUFG/BUFR resources. Please use the buffer_type constraint in order to insert these buffers to the clock signals to help prevent skew problems.
 
@@ -285,7 +289,7 @@ Timing Summary:
 ---------------
 Speed Grade: -3
 
-   Minimum period: 1.950ns (Maximum Frequency: 512.794MHz)
+   Minimum period: 2.104ns (Maximum Frequency: 475.319MHz)
    Minimum input arrival time before clock: 3.011ns
    Maximum output required time after clock: 3.732ns
    Maximum combinational path delay: No path found
@@ -296,36 +300,60 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'clk'
-  Clock period: 1.950ns (frequency: 512.794MHz)
-  Total number of paths / destination ports: 3 / 2
+  Clock period: 2.104ns (frequency: 475.319MHz)
+  Total number of paths / destination ports: 300 / 24
 -------------------------------------------------------------------------
-Delay:               1.950ns (Levels of Logic = 1)
+Delay:               2.104ns (Levels of Logic = 25)
   Source:            clk_divider_0 (FF)
-  Destination:       clk_divider_0 (FF)
+  Destination:       clk_divider_23 (FF)
   Source Clock:      clk rising
   Destination Clock: clk rising
 
-  Data Path: clk_divider_0 to clk_divider_0
+  Data Path: clk_divider_0 to clk_divider_23
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FD:C->Q               2   0.447   0.616  clk_divider_0 (clk_divider_0)
-     INV:I->O              1   0.206   0.579  Mcount_clk_divider_xor<0>11_INV_0 (Result<0>)
-     FD:D                      0.102          clk_divider_0
+     FD:C->Q               1   0.447   0.579  clk_divider_0 (clk_divider_0)
+     INV:I->O              1   0.206   0.000  Mcount_clk_divider_lut<0>_INV_0 (Mcount_clk_divider_lut<0>)
+     MUXCY:S->O            1   0.172   0.000  Mcount_clk_divider_cy<0> (Mcount_clk_divider_cy<0>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<1> (Mcount_clk_divider_cy<1>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<2> (Mcount_clk_divider_cy<2>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<3> (Mcount_clk_divider_cy<3>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<4> (Mcount_clk_divider_cy<4>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<5> (Mcount_clk_divider_cy<5>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<6> (Mcount_clk_divider_cy<6>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<7> (Mcount_clk_divider_cy<7>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<8> (Mcount_clk_divider_cy<8>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<9> (Mcount_clk_divider_cy<9>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<10> (Mcount_clk_divider_cy<10>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<11> (Mcount_clk_divider_cy<11>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<12> (Mcount_clk_divider_cy<12>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<13> (Mcount_clk_divider_cy<13>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<14> (Mcount_clk_divider_cy<14>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<15> (Mcount_clk_divider_cy<15>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<16> (Mcount_clk_divider_cy<16>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<17> (Mcount_clk_divider_cy<17>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<18> (Mcount_clk_divider_cy<18>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<19> (Mcount_clk_divider_cy<19>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<20> (Mcount_clk_divider_cy<20>)
+     MUXCY:CI->O           1   0.019   0.000  Mcount_clk_divider_cy<21> (Mcount_clk_divider_cy<21>)
+     MUXCY:CI->O           0   0.019   0.000  Mcount_clk_divider_cy<22> (Mcount_clk_divider_cy<22>)
+     XORCY:CI->O           1   0.180   0.000  Mcount_clk_divider_xor<23> (Result<23>)
+     FD:D                      0.102          clk_divider_23
     ----------------------------------------
-    Total                      1.950ns (0.755ns logic, 1.195ns route)
-                                       (38.7% logic, 61.3% route)
+    Total                      2.104ns (1.525ns logic, 0.579ns route)
+                                       (72.5% logic, 27.5% route)
 
 =========================================================================
-Timing constraint: Default period analysis for Clock 'clk_divider_1'
+Timing constraint: Default period analysis for Clock 'clk_divider_23'
   Clock period: 1.714ns (frequency: 583.431MHz)
   Total number of paths / destination ports: 15 / 4
 -------------------------------------------------------------------------
 Delay:               1.714ns (Levels of Logic = 1)
   Source:            temp_count_0 (FF)
   Destination:       temp_count_0 (FF)
-  Source Clock:      clk_divider_1 rising
-  Destination Clock: clk_divider_1 rising
+  Source Clock:      clk_divider_23 rising
+  Destination Clock: clk_divider_23 rising
 
   Data Path: temp_count_0 to temp_count_0
                                 Gate     Net
@@ -339,13 +367,13 @@ Delay:               1.714ns (Levels of Logic = 1)
                                        (43.9% logic, 56.1% route)
 
 =========================================================================
-Timing constraint: Default OFFSET IN BEFORE for Clock 'clk_divider_1'
+Timing constraint: Default OFFSET IN BEFORE for Clock 'clk_divider_23'
   Total number of paths / destination ports: 8 / 8
 -------------------------------------------------------------------------
 Offset:              3.011ns (Levels of Logic = 2)
   Source:            pause (PAD)
   Destination:       temp_count_0 (FF)
-  Destination Clock: clk_divider_1 rising
+  Destination Clock: clk_divider_23 rising
 
   Data Path: pause to temp_count_0
                                 Gate     Net
@@ -359,13 +387,13 @@ Offset:              3.011ns (Levels of Logic = 2)
                                        (58.1% logic, 41.9% route)
 
 =========================================================================
-Timing constraint: Default OFFSET OUT AFTER for Clock 'clk_divider_1'
+Timing constraint: Default OFFSET OUT AFTER for Clock 'clk_divider_23'
   Total number of paths / destination ports: 4 / 4
 -------------------------------------------------------------------------
 Offset:              3.732ns (Levels of Logic = 1)
   Source:            temp_count_3 (FF)
   Destination:       count_out<3> (PAD)
-  Source Clock:      clk_divider_1 rising
+  Source Clock:      clk_divider_23 rising
 
   Data Path: temp_count_3 to count_out<3>
                                 Gate     Net
@@ -387,22 +415,22 @@ Clock to Setup on destination clock clk
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-clk            |    1.950|         |         |         |
+clk            |    2.104|         |         |         |
 ---------------+---------+---------+---------+---------+
 
-Clock to Setup on destination clock clk_divider_1
+Clock to Setup on destination clock clk_divider_23
 ---------------+---------+---------+---------+---------+
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-clk_divider_1  |    1.714|         |         |         |
+clk_divider_23 |    1.714|         |         |         |
 ---------------+---------+---------+---------+---------+
 
 =========================================================================
 
 
 Total REAL time to Xst completion: 4.00 secs
-Total CPU time to Xst completion: 3.80 secs
+Total CPU time to Xst completion: 3.86 secs
  
 --> 
 
