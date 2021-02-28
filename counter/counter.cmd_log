@@ -1,0 +1,3 @@
+xst -intstyle ise -ifn "C:/LocalXilinx/Projects/counter/counter/counter.xst" -ofn "C:/LocalXilinx/Projects/counter/counter/counter.syr" 
+xst -intstyle ise -ifn "C:/LocalXilinx/Projects/counter/counter/counter.xst" -ofn "C:/LocalXilinx/Projects/counter/counter/counter.syr" 
+xst -intstyle ise -ifn "C:/LocalXilinx/Projects/counter/counter/counter.xst" -ofn "C:/LocalXilinx/Projects/counter/counter/counter.syr" 
