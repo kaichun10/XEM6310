@@ -1,1 +1,0 @@
--intstyle "ise" -incremental -lib "secureip" -o "C:/LocalXilinx/Projects/counter/counter/counter_tb_isim_beh.exe" -prj "C:/LocalXilinx/Projects/counter/counter/counter_tb_beh.prj" "work.counter_tb" 
